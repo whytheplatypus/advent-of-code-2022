@@ -18,28 +18,37 @@ fn main() {
 
 fn game_score(game: &str) -> i32 {
     let mut scores = HashMap::new();
-    scores.insert("X", 1);
-    scores.insert("Y", 2);
-    scores.insert("Z", 3);
+    scores.insert("A", 1);
+    scores.insert("B", 2);
+    scores.insert("C", 3);
+
+    let mut results = HashMap::new();
+    results.insert("X", 0);
+    results.insert("Y", 3);
+    results.insert("Z", 6);
 
     let mut games = HashMap::new();
     // draws
-    games.insert("A X", 3);
-    games.insert("B Y", 3);
-    games.insert("C Z", 3);
+    games.insert("A X", "C");
+    games.insert("B Y", "B");
+    games.insert("C Z", "A");
     // wins
-    games.insert("A Y", 6);
-    games.insert("B Z", 6);
-    games.insert("C X", 6);
+    games.insert("A Y", "A");
+    games.insert("B Z", "C");
+    games.insert("C X", "B");
     // losses
-    games.insert("A Z", 0);
-    games.insert("B X", 0);
-    games.insert("C Y", 0);
+    games.insert("A Z", "B");
+    games.insert("B X", "A");
+    games.insert("C Y", "C");
 
-    let game_result = games.get(game);
-	match game_result {
+	match games.get(game) {
 		None => 0,
-		Some(score) => score + scores.get(dbg!(game.split(" ").last().unwrap())).unwrap()
+		Some(shape) => {
+			let shape_score = dbg!(scores.get(shape).unwrap());
+			let result = dbg!(game.split(" ").last().unwrap());
+			let result_score = dbg!(results.get(result).unwrap());
+			shape_score + result_score
+		}
 	}
 }
 
@@ -47,5 +56,5 @@ fn game_score(game: &str) -> i32 {
 fn test_match_score() {
 
     let score = game_score("A X");
-    assert_eq!(score, 4);
+    assert_eq!(score, 3);
 }
