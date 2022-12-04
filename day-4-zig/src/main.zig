@@ -17,22 +17,33 @@ pub fn main() !void {
 
     const input_file = fetch_file_arg();
     const lines = try read_file_to_lines(input_file);
-    var pair_count: usize = 0;
+    var covered_count: usize = 0;
+    var intersected_count: usize = 0;
     for (lines) |line| {
         const areas = split_line(line);
         const elf_one_area = try parse_assignment(areas[0]);
         const elf_two_area = try parse_assignment(areas[1]);
         if (check_coverage(elf_one_area, elf_two_area)) {
-            pair_count += 1;
+            covered_count += 1;
+        }
+        if (check_intersection(elf_one_area, elf_two_area)) {
+            intersected_count += 1;
         }
     }
-    std.debug.print("redunant elves {d}.\n", .{ pair_count });
+    std.debug.print("fully redunant elves {d}.\n", .{ covered_count });
+    std.debug.print("mostly redunant elves {d}.\n", .{ intersected_count });
 }
 
 fn check_coverage(first: [2]i32, second: [2]i32) bool {
     const first_covers_second = first[0] <= second[0] and first[1] >= second[1]; 
     const second_covers_first = first[0] >= second[0] and first[1] <= second[1];
     return first_covers_second or second_covers_first;
+}
+
+fn check_intersection(first: [2]i32, second: [2]i32) bool {
+    const first_separate = first[1] < second[0]; 
+    const second_separate = second[1] < first[0];
+    return !(first_separate or second_separate);
 }
 
 fn split_line(line: []const u8) [2][]const u8 {
