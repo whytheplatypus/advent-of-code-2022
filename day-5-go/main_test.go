@@ -8,15 +8,9 @@ import (
 
 func TestPop(t *testing.T) {
 	example := stack{"a", "b", "c"}
-	crate := example.pop()
-	if example[len(example)-1] != "b" {
-		t.Fatal("Failed", example)
-	}
-	if crate != "c" {
-		t.Fatal("Failed", crate)
-	}
-	t.Log(example)
-	t.Log(crate)
+	crates := example.pop(2)
+	assert.Equal(t, []string{"b", "c"}, crates)
+	assert.Equal(t, stack{"a"}, example)
 }
 
 func TestAppend(t *testing.T) {

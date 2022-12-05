@@ -12,23 +12,21 @@ import (
 
 type stack []string
 
-func (s *stack) pop() string {
-	crate := (*s)[len(*s)-1]
-	*s = (*s)[:len(*s)-1]
-	return crate
+func (s *stack) pop(num int) []string {
+	crates := (*s)[len(*s)-num : len(*s)]
+	*s = (*s)[:len(*s)-num]
+	return crates
 }
 
-func (s *stack) append(crate string) {
-	*s = append(*s, crate)
+func (s *stack) append(crates ...string) {
+	*s = append(*s, crates...)
 }
 
 type yard map[string]*stack
 
 func (y yard) move(num int, from, to string) {
-	for i := 0; i < num; i++ {
-		crate := y[from].pop()
-		y[to].append(crate)
-	}
+	crates := y[from].pop(num)
+	y[to].append(crates...)
 }
 
 func splitDrawing(drawing string) (string, string) {
