@@ -13,19 +13,19 @@ func TestProcessBuffer(t *testing.T) {
 	}{
 		{
 			"bvwbjplbgvbhsrlpgdmjqwftvncz",
-			5,
+			23,
 		},
 		{
 			"nppdvjthqldpwncqszvftbrmjlhg",
-			6,
+			23,
 		},
 		{
 			"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg",
-			10,
+			29,
 		},
 		{
 			"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",
-			11,
+			26,
 		},
 	}
 

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const MARKER_LEN = 4
+const MARKER_LEN = 14
 
 type window map[string]struct{}
 
