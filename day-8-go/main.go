@@ -33,15 +33,20 @@ func main() {
 	grid = grid[:len(grid)-1]
 	render(grid)
 
-	total := 0
+	highScore := 0
 	for y, row := range grid {
-		for x, _ := range row {
-			if visible(grid, x, y) {
-				total++
+		fmt.Printf("%d: ", y)
+		for x, h := range row {
+			score := score(grid, x, y)
+			if score > highScore {
+				fmt.Printf("!")
+				highScore = score
 			}
+			fmt.Printf("%d ", h)
 		}
+		fmt.Println("")
 	}
-	log.Println(total)
+	log.Println(highScore)
 }
 
 func render(grid [][]int) {
@@ -52,50 +57,53 @@ func render(grid [][]int) {
 		}
 		fmt.Println("")
 	}
+	fmt.Println("---\n")
 }
 
-func visible(grid [][]int, x, y int) bool {
-	visible := true
+func score(grid [][]int, x, y int) int {
 	height := grid[y][x]
+	score := 0
 
-	//from left
-	for _, h := range grid[y][:x] {
-		visible = visible && height > h
-	}
-	if visible {
-		log.Println("visible from left")
-		return visible
-	}
-	visible = true
-	//from right
-	for i := len(grid[y]) - 1; i > x; i-- {
+	//left
+	for i := x - 1; i > -1; i-- {
+		score++
 		h := grid[y][i]
-		visible = visible && height > h
-	}
-	if visible {
-		log.Println("visible from right")
-		return visible
+		if height <= h {
+			break
+		}
 	}
 
-	visible = true
+	//from right
+	count := 0
+	for i := x + 1; i < len(grid[y]); i++ {
+		count++
+		h := grid[y][i]
+		if height <= h {
+			break
+		}
+	}
+	score *= count
+
+	count = 0
 	//from top
-	for i := 0; i < y; i++ {
+	for i := y - 1; i > -1; i-- {
+		count++
 		h := grid[i][x]
-		visible = visible && height > h
+		if height <= h {
+			break
+		}
 	}
-	if visible {
-		log.Println("visible from top")
-		return visible
-	}
+	score *= count
 
-	visible = true
+	count = 0
 	//from bottom
-	for i := len(grid) - 1; i > y; i-- {
+	for i := y + 1; i < len(grid); i++ {
+		count++
 		h := grid[i][x]
-		visible = visible && height > h
+		if height <= h {
+			break
+		}
 	}
-	if visible {
-		log.Println("visible from bottom")
-	}
-	return visible
+	score *= count
+	return score
 }
